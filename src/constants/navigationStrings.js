@@ -2,5 +2,6 @@ export default{
    SIGNUP:'Signup',
    LOGIN:'Login',
    OUTERSCREEN:'OuterScreen',
-   OTPVERIFICATION:'OtpVerification'
+   OTPVERIFICATION:'OtpVerification',
+   HOMEPAGE:'Homepage'
 }

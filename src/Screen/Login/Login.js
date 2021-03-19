@@ -8,6 +8,9 @@ import imagePath from '../../constants/imagePath';
 import navigationStrings from '../../constants/navigationStrings';
 import colors from '../../styles/colors';
 import commonStyles from '../../styles/commonStyles';
+import validator from '../../utils/validation';
+import {showMessage} from 'react-native-flash-message';
+import api from '../../apis';
 
 import {
   moderateScaleVertical,
@@ -15,11 +18,95 @@ import {
 } from '../../styles/responsiveSize';
 
 export default class Login extends Component {
+  state={
+    userEmail:'',
+    userPassword:'',
+    isLoading: false,
+  }
   onmove = () => {
     const {navigation} = this.props;
     navigation.navigate(navigationStrings.SIGNUP);
   };
+  isValidData = () => {
+    const {
+      userEmail,
+      userName,
+      userPassword,
+      confirmPassword,
+      dateOfBirth,
+    } = this.state;
+    const error = validator({
+      name: userName,
+      email: userEmail,
+      password: userPassword,
+      confirmPassword: confirmPassword,
+    });
+    if (error) {
+      showMessage({
+        type: 'info',
+        icon: 'info',
+        message: error,
+      });
+      return false;
+    }
+
+    return true;
+  };
+onLogin=()=>{
+    
+    const{userPassword,userEmail}=this.state
+    const {navigation}=this.props
+    if(this.isValidData()){
+     
+        this.setState({
+            isLoading:true
+        })
+
+        api.login({
+            email:userEmail,
+            password:userPassword
+
+        }).then(res=>{
+            
+                this.setState({   
+                  isLoading: false,
+                });
+                showMessage({
+                  type: 'success',
+                  icon: 'success',
+                  message: "Login success",
+                });
+          
+          navigation.navigate(navigationStrings.HOMEPAGE)
+              
+        }).catch(error=>{
+           
+              this.setState({  
+                isLoading: false,
+              });
+              showMessage({
+                type: 'danger', 
+                icon: 'danger',
+                message: "Enter correct username password",
+              });
+  
+            }
+          );
+
+    }
+    
+}
+_onChangeText(key){
+  return (value)=>{
+      this.setState({
+          [key]:value
+      });
+  }
+
+
+}
   render() {
+    const {userPassword,userEmail}=this.state
     return (
       <WrapperContainer>
         <View style={{flex: 1, backgroundColor: colors.white}}>
@@ -28,14 +115,18 @@ export default class Login extends Component {
               marginHorizontal: 15,
               marginTop: moderateScaleVertical(15),
             }}>
-            <TextInputWithLabel label="Email" placeholder="Enter your Email" />
+            <TextInputWithLabel label="Email" placeholder="Enter your Email" 
+            onChangeText={this._onChangeText('userEmail')}
+             value={userEmail} />
             <TextInputWithLabel
               label="Password"
               placeholder="Enter your password"
               secureTextEntry={true}
+              value={userPassword}
+              onChangeText={this._onChangeText('userPassword')}
             />
             <View>
-              <ButtonWithLoader btnText={'login'} />
+              <ButtonWithLoader btnText={'login'}  onPress={this.onLogin}/>
             </View>
           </View>
 

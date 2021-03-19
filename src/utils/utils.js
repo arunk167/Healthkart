@@ -1,8 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PermissionsAndroid, Platform} from 'react-native';
-import store from '../redux/store';
-import types from '../redux/types';
+// import store from '../redux/store';
+// import types from '../redux/types';
 import {showError} from './helperFunctions';
 
 export async function getHeaders() {

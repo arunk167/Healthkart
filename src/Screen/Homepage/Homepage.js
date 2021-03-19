@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View ,FlatList,TextInput,StyleSheet,Alert} from 'react-native'
-import AddButton from '../../Component/AddButton'
-import Header from '../../Component/Header'
-import ListItem from '../../Component/ListItem'
-import {onAdd,onDelete,onUpdate} from '../../../action' 
-import store from '../../../store' 
-import ModalView from '../../Component/ModalView'
+// import AddButton from '../../Component/AddButton'
+// import Header from '../../Component/Header'
+// import ListItem from '../../Component/ListItem'
+// import {onAdd,onDelete,onUpdate} from '../../../action' 
+// import store from '../../../store' 
+// import ModalView from '../../Component/ModalView'
 
 
 
@@ -23,9 +23,9 @@ export default class Homepage extends Component {
             
         }
     }
-    componentDidMount(){
-        store.subscribe(()=>this.setState({ }))
-    }
+    // componentDidMount(){
+    //     store.subscribe(()=>this.setState({ }))
+    // }
     _onChangeText=(key)=>{
         return (value)=>{
             this.setState({
@@ -98,9 +98,9 @@ export default class Homepage extends Component {
         return (
             
             <View style={{flex:1}}>
-                <Header />
+                {/* <Header /> */}
                
-               <FlatList
+               {/* <FlatList
                 data={store.getState().taskList}
                 keyExtractor={item=>item.id}
                 renderItem={({item})=>{
@@ -120,7 +120,8 @@ export default class Homepage extends Component {
                
                  onCloseModal={this.onCloseModal}  onItemAction={this.onItemUpdate} buttonText={'Update'}
                  />
-            }
+            } */}
+            <Text>home</Text>
                
             </View>
         )
