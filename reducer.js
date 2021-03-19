@@ -1,24 +1,25 @@
 import types from './types'
 const initialState={
-    taskList:[],
+    cartArray:[],
 };
 export default function counterReducer(state=initialState,action){
     switch(action.type){
         case types.ADD:
             const {obj}=action.payload
+            console.log(state.cartArray)
             return{
                 ...state,
-                taskList:[...state.taskList,obj]
+                cartArray:[...state.cartArray,obj]
             }
         case types.DELETE:
-            newArray=state.taskList
+           let newArray=state.cartArray
             newArray=newArray.filter(item=>action.payload.id !==item.id)
             return {
                 ...state,
-                taskList:newArray
+                cartArray:newArray
             }
         case types.UPDATE:
-            newArray=state.taskList
+            newArray=state.cartArray
             console.log(action.payload.id)
             let elementsIndex = newArray.findIndex(
                 (element) => element.id ==action.payload.id,
@@ -33,7 +34,7 @@ export default function counterReducer(state=initialState,action){
 
             return {
                 ...state,
-                taskList:newArray
+                cartArray:newArray
 
             }
         default:

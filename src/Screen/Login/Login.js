@@ -18,11 +18,11 @@ import {
 } from '../../styles/responsiveSize';
 
 export default class Login extends Component {
-  state={
-    userEmail:'',
-    userPassword:'',
+  state = {
+    userEmail: '',
+    userPassword: '',
     isLoading: false,
-  }
+  };
   onmove = () => {
     const {navigation} = this.props;
     navigation.navigate(navigationStrings.SIGNUP);
@@ -52,61 +52,52 @@ export default class Login extends Component {
 
     return true;
   };
-onLogin=()=>{
-    
-    const{userPassword,userEmail}=this.state
-    const {navigation}=this.props
-    if(this.isValidData()){
-     
-        this.setState({
-            isLoading:true
-        })
-
-        api.login({
-            email:userEmail,
-            password:userPassword
-
-        }).then(res=>{
-            
-                this.setState({   
-                  isLoading: false,
-                });
-                showMessage({
-                  type: 'success',
-                  icon: 'success',
-                  message: "Login success",
-                });
-          
-          navigation.navigate(navigationStrings.HOMEPAGE)
-              
-        }).catch(error=>{
-           
-              this.setState({  
-                isLoading: false,
-              });
-              showMessage({
-                type: 'danger', 
-                icon: 'danger',
-                message: "Enter correct username password",
-              });
-  
-            }
-          );
-
-    }
-    
-}
-_onChangeText(key){
-  return (value)=>{
+  onLogin = () => {
+    const {userPassword, userEmail} = this.state;
+    const {navigation} = this.props;
+    if (this.isValidData()) {
       this.setState({
-          [key]:value
+        isLoading: true,
       });
+
+      api
+        .login({
+          email: userEmail,
+          password: userPassword,
+        })
+        .then(res => {
+          this.setState({
+            isLoading: false,
+          });
+          showMessage({
+            type: 'success',
+            icon: 'success',
+            message: 'Login success',
+          });
+
+          navigation.navigate(navigationStrings.HOMEPAGE);
+        })
+        .catch(error => {
+          this.setState({
+            isLoading: false,
+          });
+          showMessage({
+            type: 'danger',
+            icon: 'danger',
+            message: 'Enter correct username password',
+          });
+        });
+    }
+  };
+  _onChangeText(key) {
+    return value => {
+      this.setState({
+        [key]: value,
+      });
+    };
   }
-
-
-}
   render() {
-    const {userPassword,userEmail}=this.state
+    const {userPassword, userEmail} = this.state;
     return (
       <WrapperContainer>
         <View style={{flex: 1, backgroundColor: colors.white}}>
@@ -115,9 +106,12 @@ _onChangeText(key){
               marginHorizontal: 15,
               marginTop: moderateScaleVertical(15),
             }}>
-            <TextInputWithLabel label="Email" placeholder="Enter your Email" 
-            onChangeText={this._onChangeText('userEmail')}
-             value={userEmail} />
+            <TextInputWithLabel
+              label="Email"
+              placeholder="Enter your Email"
+              onChangeText={this._onChangeText('userEmail')}
+              value={userEmail}
+            />
             <TextInputWithLabel
               label="Password"
               placeholder="Enter your password"
@@ -126,7 +120,7 @@ _onChangeText(key){
               onChangeText={this._onChangeText('userPassword')}
             />
             <View>
-              <ButtonWithLoader btnText={'login'}  onPress={this.onLogin}/>
+              <ButtonWithLoader btnText={'login'} onPress={this.onLogin} />
             </View>
           </View>
 
@@ -135,8 +129,7 @@ _onChangeText(key){
             <Text style={styles.orText}>OR</Text>
             <View style={styles.hyphen} />
           </View>
-          <View
-            style={styles.socialButton}>
+          <View style={styles.socialButton}>
             <View
               style={{width: '46%', borderWidth: 1, borderColor: colors.blue}}>
               <ButtonWithImage
@@ -209,11 +202,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: moderateScaleVertical(20),
   },
-  socialButton:{
+  socialButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
     marginHorizontal: 20,
     marginVertical: 20,
-  }
+  },
 });

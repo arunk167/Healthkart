@@ -1,7 +1,7 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack';
 import navigationStrings from '../constants/navigationStrings';
-import { Login, OuterScreen, Signup } from '../Screen';
+import { Cart, Login, OuterScreen, ProductDetail, Signup } from '../Screen';
 import OtpVerification from '../Screen/OtpVerification/OtpVerification';
 import Homepage from '../Screen/Homepage/Homepage';
 
@@ -21,7 +21,16 @@ function MainStack(){
              />       
              <Stack.Screen name={navigationStrings.LOGIN} component={Login} />  
              <Stack.Screen name={navigationStrings.OTPVERIFICATION} component={OtpVerification} /> 
-             <Stack.Screen name={navigationStrings.HOMEPAGE} component={Homepage} />     
+             <Stack.Screen name={navigationStrings.HOMEPAGE} component={Homepage} 
+              options={{
+                headerShown:false
+              }}/>   
+             <Stack.Screen
+             name={navigationStrings.PRODUCT_DETAIL}
+                component={ProductDetail}
+              />  
+               <Stack.Screen name={navigationStrings.CART} component={Cart} 
+              />  
         </React.Fragment>
     )
 }

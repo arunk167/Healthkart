@@ -3,5 +3,7 @@ export default{
    LOGIN:'Login',
    OUTERSCREEN:'OuterScreen',
    OTPVERIFICATION:'OtpVerification',
-   HOMEPAGE:'Homepage'
+   HOMEPAGE:'Homepage',
+   PRODUCT_DETAIL:'ProductDetail',
+   CART:'Cart'
 }
