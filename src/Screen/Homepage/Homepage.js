@@ -1,216 +1,287 @@
-import React, { Component } from 'react'
-import { Text, View ,FlatList,TextInput,StyleSheet,Alert} from 'react-native'
+import React, {Component} from 'react';
+import {Text, View, FlatList, TextInput, StyleSheet, Alert, ScrollView,Image} from 'react-native';
 
 import MenProducts from '../../Component/MenProducts';
 import navigationStrings from '../../constants/navigationStrings';
-
-
-
-import Header from '../../Component/Header'
-
-import {onAdd,onDelete,onUpdate} from '../../../action' 
-import store from '../../../store' 
+import {connect} from 'react-redux';
 
 
 
 
+import Header from '../../Component/Header';
+import store from '../../redux/store';
+import types from '../../redux/types';
+import action from '../../redux/actions';
+import WrapperContainer from '../../Component/WrapperContainer';
+import Carousel from '../../Component/Carousel';
+import imagePath from '../../constants/imagePath';
+import colors from '../../styles/colors';
+import { color } from 'react-native-reanimated';
 
 
-export default class Homepage extends Component {
-    constructor(props){
-        super(props);
-        this.state={
-            inputText:'', 
-            stutus:'',
-            itemCount:0,
-            id:0,
-            isModalVisiable:false,
-            isAdd:true,
-            item_id:null,
-            productArray: [
-                {
-                  id: 0,
-                  name: 'HERE&NOW',
-                  detail: 'Men Priented Round Neck T-shirt',
-                  price: 447,
-                  quantity:1,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/4318138/2018/5/4/11525433792765-HERENOW-Men-Black-Printed-Round-Neck-T-shirt-2881525433792598-1.jpg',
-                },
-                {
-                  id: 1,
-                  name: 'Huetrap',
-                  detail: 'Men Priented Round Neck T-shirt',
-                  price: 519,
-                  quantity:1,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/productimage/2019/12/12/1aab2a18-6774-4f83-b292-fe301755a3351576102551329-1.jpg',
-                },
-                {
-                  id: 2,
-                  name: 'Roadster',
-                  quantity:1,
-                  detail: 'Men Priented Round coller T-shirt',
-                  price: 435,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/12003948/2020/7/27/5555b83c-80e4-42ef-9477-7f8adc96ce171595840861827-Roadster-Men-Rust-Printed-Round-Neck-T-shirt-487159584085982-1.jpg',
-                },
-                {
-                  id: 3,
-                  name: 'Nautica',
-                  detail: 'Men Priented Round Neck T-shirt',
-                  price: 550,
-                  quantity:1,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/11630290/2020/7/8/41d7ce6d-37cf-4fcc-9564-ebe97c7c393a1594198655634-Nautica-Men-Red-Solid-Round-Neck-T-shirt-6191594198653845-1.jpg',
-                },
-                {
-                  id: 4,
-                  name: 'HRX by Hrithik Roshan',
-                  detail: 'Yellow Printed Round Neck T-Shirt',
-                  price: 799,
-                  quantity:1,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/1700944/2019/6/8/972c9498-3a37-4d5d-976c-4493b4d5c0021559989322793-HRX-by-Hrithik-Roshan-Men-Yellow-Printed-Round-Neck-T-Shirt--1.jpg',
-                },
-                {
-                  id: 5,
-                  name: 'Louis Philippe Sport',
-                  detail: 'Men Priented Round Neck T-shirt',
-                  price: 456,
-                  quantity:1,
-                  lastprice: 999,
-                  image:
-                    'https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_210,c_limit,fl_progressive/assets/images/12390256/2020/9/29/7e467ca7-a127-42c6-be62-dc4b837e66a51601352033431-Louis-Philippe-Sport-Men-Tshirts-541601352032002-1.jpg',
-                },
-              ],
-            
-        }
-    }
 
-    // componentDidMount(){
-    //     store.subscribe(()=>this.setState({ }))
-    // }
-    _onChangeText=(key)=>{
-        return (value)=>{
-            this.setState({
-                [key]:value
-            })
-        }
-    }
-    onItemAdd=(id)=>{
-        
-        const {productArray,itemCount}=this.state;
-        let cartArray=store.getState().cartArray
-       
-        let obj={}
-        obj['id']=productArray[id].id
-        obj['name']=productArray[id].name
-        obj['price']=productArray[id].price
-        obj['image']=productArray[id].image
-        obj['lastprice']=productArray[id].lastprice
-        obj['quantity']=productArray[id].quantity
-        store.dispatch(onAdd(obj))
-        this.setState({
-            itemCount:store.getState().cartArray.length
-        })
-       
-        console.log(itemCount)
-    }
+
+
+class Homepage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      productArray: [
+        {
+          id: 0,
+          name: 'Peanut Butter',
+          detail: '0.750 kg, Unsweetened Crunchy',
+          price: 447,
+          quantity: 0,
+          lastprice: 999,
+          image:
+            'https://img4.hkrtcdn.com/11965/prd_1196443-MuscleBlaze-High-Protein-Natural-Peanut-Butter-Unsweetened-0.750-kg-Crunchy_c_m.jpg',
+        },
+        {
+          id: 1,
+          name: 'Huetrap',
+          detail: 'MB Fuel One Vitamin C 500mg',
+          price: 519,
+          quantity: 0,
+          lastprice: 999,
+          image:
+            'https://img4.hkrtcdn.com/13528/prd_1352733_c_m.jpg',
+        },
+        {
+          id: 2,
+          name: 'MB Fuel',
+          quantity: 0,
+          detail: 'MB Fuel One Vitamin C 500mg',
+          price: 435,
+          lastprice: 999,
+          image:
+            'https://img2.hkrtcdn.com/12747/prd_1274641_c_m.jpg',
+        },
+        {
+          id: 3,
+          name: 'INLIFE Natural',
+          detail: 'INLIFE Natural Plant Based Vitamin C',
+          price: 550,
+          quantity: 0,
+          lastprice: 999,
+          image:
+            'https://img2.hkrtcdn.com/12747/prd_1274641_c_m.jpg',
+        },
+        {
+          id: 4,
+          name: 'HRX by Hrithik Roshan',
+          detail: 'Meadbery Lung Detox Vitamin C',
+          price: 799,
+          quantity: 0,
+          lastprice: 999,
+          image:
+            'https://m.media-amazon.com/images/I/61cnVP6c4dL._AC_UL480_FMwebp_QL65_.jpg',
+        },
+        {
+          id: 5,
+          name: 'Meadbery Lung Detox',
+          detail: 'Meadbery Lung Detox',
+          price: 456,
+          quantity: 0,
+          lastprice: 999,
+          image:
+            'https://img6.hkrtcdn.com/13060/prd_1305995-Nouriza-Peanut-Butter-100-Natural-Unsweetened-1-kg-Crunchy_o.jpg',
+        },
+      ],
+      ayurvedic: [
+        {
+          id: 10,
+          name: 'Peanut Butter',
+          detail: '0.750 kg, Unsweetened Crunchy',
+          price: 317,
+          quantity: 0,
+          lastprice: 599,
+          image:
+            'https://img2.hkrtcdn.com/12643/prd_1264201_o.jpg',
+        },
+        {
+          id: 11,
+          name: 'Huetrap',
+          detail: 'MB Fuel One Vitamin C 500mg',
+          price: 219,
+          quantity: 0,
+          lastprice: 499,
+          image:
+            'https://img4.hkrtcdn.com/13528/prd_1352733_c_m.jpg',
+        },
+        {
+          id: 12,
+          name: 'MB Fuel',
+          quantity: 0,
+          detail: 'MB Fuel One Vitamin C 500mg',
+          price: 235,
+          lastprice: 699,
+          image:
+            'https://img2.hkrtcdn.com/12747/prd_1274641_c_m.jpg',
+        },
+        {
+          id: 13,
+          name: 'INLIFE Natural',
+          detail: 'INLIFE Natural Plant Based Vitamin C',
+          price: 520,
+          quantity: 0,
+          lastprice: 799,
+          image:
+            'https://img2.hkrtcdn.com/12747/prd_1274641_c_m.jpg',
+        },
+        {
+          id: 14,
+          name: 'HRX by Hrithik Roshan',
+          detail: 'Meadbery Lung Detox Vitamin C',
+          price: 799,
+          quantity: 0,
+          lastprice: 999, 
+          image:
+            'https://m.media-amazon.com/images/I/61cnVP6c4dL._AC_UL480_FMwebp_QL65_.jpg',
+        },
+        {
+          id: 15,
+          name: 'Meadbery Lung Detox',
+          detail: 'Meadbery Lung Detox',
+          price: 456,
+          quantity: 0,
+          lastprice: 899,
+          image:
+            'https://img6.hkrtcdn.com/13060/prd_1305995-Nouriza-Peanut-Butter-100-Natural-Unsweetened-1-kg-Crunchy_o.jpg',
+        },
+      ],
+    };
+  }
+
+ 
+  onItemAdd = (data) => {
+      // const {productArray}=this.state
+      //  let newArray=[...productArray]
+      //  let  itemIndex = newArray.findIndex(item=>item.id===id)
+      //  action.onAddCart(newArray,itemIndex) 
+      action.onAddCart(data)
     
 
-    onItemUpdate=()=>{
-        const {item_id,inputText,stutus}=this.state
-        store.dispatch(onUpdate(item_id,inputText,stutus))
-        this.setState({
-            isModalVisiable:false
-        })
-    }
-    onClickAdd=()=>{
-        this.setState({
-            isModalVisiable:true,
-            isAdd:true
-        })
-
-    }
-    onClickUpdate=(id)=>{
-       
-        this.setState({
-            isModalVisiable:true,
-            isAdd:false,
-            item_id:id
-        })
-    }
-    onCloseModal=()=>{
-        this.setState({
-            isModalVisiable:false
-        })
-
-    }
-    datapass = (id) => {
-        const {navigation} = this.props;
-        const {productArray, addCart, itemCount} = this.state;
-        let newArray = [...productArray];
-        navigation.navigate(navigationStrings.PRODUCT_DETAIL, {selectedItem: newArray[id]});
-      };
-    render() {
-        const {inputText,isModalVisiable,isAdd,productArray,datapass,itemCount}=this.state
-        return (
-            
-            <View style={{flex:1}}>
-                <Header  itemCount={itemCount}/>
-               
-               {/* <FlatList
-                data={store.getState().taskList}
-                keyExtractor={item=>item.id}
-                renderItem={({item})=>{
-                    return <ListItem data={item} onItemRemove={this.onItemRemove}  onItemUpdate={this.onItemUpdate}  onClickUpdate={this.onClickUpdate}/>
-                }}
-               />
-               <View style={styles.button}>
-               <AddButton onClickAdd={this.onClickAdd}/> 
-
-               </View>
-               {isAdd?
-                 <ModalView _onChangeText={this._onChangeText}  isModalVisiable={isModalVisiable}  
-               
-                 onCloseModal={this.onCloseModal}  onItemAction={this. onItemAdd} buttonText={'Add'}
-                 />:
-                 <ModalView _onChangeText={this._onChangeText}  isModalVisiable={isModalVisiable} 
-               
-                 onCloseModal={this.onCloseModal}  onItemAction={this.onItemUpdate} buttonText={'Update'}
-                 />
-            } */}
-            <FlatList
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.name.toString()}
-            data={productArray}
-            renderItem={({item}) => (
-              <MenProducts
-                data={item}
-                onItemAdd={this.onItemAdd}
-                datapass={this.datapass}
-                
-                
-               
-              />
-            )}
-            numColumns={2}
-          />
-               
-            </View>
-        )
-    }
+  };
+  datapass = id => {
+    const {navigation} = this.props;
+    const {productArray, addCart, itemCount} = this.state;
+    let newArray = [...productArray];
+    navigation.navigate(navigationStrings.PRODUCT_DETAIL, {
+      selectedItem: newArray[id],
+    });
+  };
+  render() {
+    const {
+      ayurvedic,
+      productArray,
+      itemCount,
+    } = this.state;
+    return (
+      <WrapperContainer>
+        <View style={{flex: 1}}>
+        <Header itemCount={itemCount} />
+        <View style={styles.searchBarView}>
+                    <Image source={imagePath.search} style={styles.searchIcon} resizeMode="contain"/>
+                    <TextInput style={styles.searcTextInput} placeholder="Search for products and brands"></TextInput>
+                  
+                </View>
+        <ScrollView>
+          <Carousel />
+         <View>
+           <Text style={{marginStart:15,fontSize:20}}>Flash Sale</Text>
+         </View>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          keyExtractor={item => item.id.toString()}
+          data={productArray}
+          renderItem={({item}) => (
+            <MenProducts
+              data={item}
+              onItemAdd={this.onItemAdd}
+              datapass={this.datapass}
+            />
+          )}
+         
+        />
+        <View>
+           <Text style={{marginStart:15,fontSize:20,textAlign:'center'}}>Top Categories</Text>
+         </View>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          keyExtractor={item => item.name.toString()}
+          data={ayurvedic}
+          renderItem={({item}) => (
+            <MenProducts
+              data={item}
+              onItemAdd={this.onItemAdd}
+              datapass={this.datapass}
+            />
+          )}
+         
+        />
+        <View>
+           <Text style={{marginStart:15,fontSize:20}}>Trending Now</Text>
+         </View>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          keyExtractor={item => item.name.toString()}
+          data={ayurvedic}
+          renderItem={({item}) => (
+            <MenProducts
+              data={item}
+              onItemAdd={this.onItemAdd}
+              datapass={this.datapass}
+            />
+          )}
+         
+        />
+        </ScrollView>
+      </View>
+      </WrapperContainer>
+    );
+  }
 }
-const styles=StyleSheet.create({
-    button:{
-        position:'absolute',
-        bottom:0,
-        right:0
-    }
-})
+const styles = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
+  searchBarView:{
+
+   borderColor:colors.textGreyB,
+   
+    backgroundColor:'white',
+    flexDirection:'row',
+    alignItems:'center',
+    paddingHorizontal:10,
+    borderWidth:0.7,
+    marginHorizontal:5,
+    marginVertical:4,
+    borderRadius:5
+   
+    
+}, searchIcon:{
+  height:18,
+  width:18,
+  tintColor:colors.textGreyB
+},
+
+searcTextInput:{
+  
+  fontSize:15,
+ 
+  paddingVertical:5
+},
+});
+const mapStateToProps = state => {
+  return {
+    cartArray: state.cart.cartArray,
+  };
+};
+
+export default connect(mapStateToProps)(Homepage);

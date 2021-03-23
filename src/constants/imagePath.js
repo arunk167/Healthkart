@@ -16,8 +16,8 @@ export default {
     search:require('../assets/images/ic_search.png'),
     lock:require('../assets/images/locked.png'),
     edit:require('../assets/images/edit.jpg'),
-    logo:require('../assets/images/m.png'),
-    beg:require('../assets/images/shopping-bag.png'),
+  
+    beg:require('../assets/images/shopping-cart.png'),
     notification:require('../assets/images/notifications.png'),
     heart:require('../assets/images/heart.png'),
     image1:require('../assets/images/image1.jpg'),
@@ -53,6 +53,10 @@ export default {
     boy:require('../assets/images/boy.jpg'),
     location:require('../assets/images/location.png'),
     timer:require('../assets/images/timer.png'),
-    share:require('../assets/images/share.png')
+    share:require('../assets/images/share.png'),
+    hk_logo:require('../assets/images/hk_logo.png'),
+    chat:require('../assets/images/chat.png'),
+    chat_active:require('../assets/images/chat_active.png'),
+    workout:require('../assets/images/workout.png')
     
 }

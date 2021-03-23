@@ -106,15 +106,14 @@ export default class OuterScreen extends Component {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity>
                   <View style={styles.buttonView}>
-                    <Text style={{color: colors.themeColor, fontSize: 18}}>
+                    <Text style={{color: colors.themeColor, fontSize: 18}}
+                    onPress={() => navigation.navigate(navigationStrings.LOGIN)}
+                    >
                       Get Started
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <Text
-                  onPress={() => navigation.navigate(navigationStrings.LOGIN)}>
-                  Skip Now
-                </Text>
+               
               </View>
             </View>
           ) : (

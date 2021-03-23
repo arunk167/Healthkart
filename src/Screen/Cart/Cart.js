@@ -5,15 +5,20 @@ import imagePath from '../../constants/imagePath';
 import colors from '../../styles/colors';
 import CartItem from '../../Component/CartItem';
 import navigationStrings from '../../constants/navigationStrings';
-import store from '../../../store';
-import {onDelete} from '../../../action' 
  
+import {connect} from 'react-redux'
+import store from '../../redux/store';
+import types from '../../redux/types';
+import index from '../../redux/actions'
+import action from '../../redux/actions';
 
-export default class Cart extends Component {
+
+
+ class Cart extends Component {
   state = {
-    totalprice: 0,
-    isDisable:false,
+      isDisable:false,
   };
+ 
   flatListItemSeparator = () => {
     return (
       <View
@@ -25,53 +30,26 @@ export default class Cart extends Component {
       />
     );
   };
+  addCount=(add_id)=>{
+ 
+      // this.props._addCount(add_id)
+      action.onIncrementCount(add_id)
+  }
 
-  addCount = (id) => {
-     
-    const { data,totalprice, demoprice} = this.props.route.params;
-    let newcountData = [...store.getState().cartArray];
+  deleteCount=(remove_id)=>{
+    const{cartArray}=this.props
+    let index=cartArray.findIndex(item=>item.id===remove_id)
+    if(cartArray[index].quantity>=2) 
+   {
 
-    let itemindex = newcountData.findIndex((item) => item.id == id);
-    let newQunantity = newcountData[itemindex];  
-    newQunantity.quantity += 1;
-    let nr = 0;
-    for (let i in data) {
-
-      nr += data[i].price * data[i].quantity;
-      
+      action.onDecrementCount(remove_id)
+   }
+    else{
+      this.onItemRemove(remove_id)
     }
-    this.setState({
-      data: newQunantity,
-      totalprice: nr,
-    });
-  };
-  deleteCount = (id) => {
-    const {isDisable}=this.state;
-    const {data} = this.props.route.params;
-    let newcountData = [...store.getState().cartArray];
-
-    let itemindex = newcountData.findIndex((item) => item.id == id);
-    let newQunantity = newcountData[itemindex];
-    let nr = 0;
-    if (newQunantity.quantity > 1) {
-      newQunantity.quantity -= 1;
-
-      for (let i in data) {
-        nr += data[i].price * data[i].quantity;
-      }
-    } else {
-      for (let i in data) {
-        nr += data[i].price * data[i].quantity;
-      }
-     
-    }
-    
-    this.setState({
-      data: newQunantity,
-      totalprice: nr,
-      isDisable:true
-    });
-  };
+  }
+  
+  
  
   onItemRemove=(id)=>{
     Alert.alert(  
@@ -82,18 +60,16 @@ export default class Cart extends Component {
                 text: 'Cancel',   
                 style: 'cancel',  
             },  
-            {text: 'OK', onPress: () => store.dispatch(onDelete(id))},  
+            {text: 'OK', onPress: () => action.onItemDelete(id)},  
         ]  
-    ); 
-    
-    
+    );     
 }
 
   renderEmptyContainer = () => {
    
     return (
       <View style={{height: 300,  justifyContent: 'center',alignItems: 'center'}}>
-        <Image  source={imagePath.beg} style={{height:100,width:100,tintColor: '#FF3E6C'}}/>
+        <Image  source={imagePath.beg} style={{height:100,width:100,tintColor: colors.themeColor}}/>
         <Text
           style={{
             color: colors.themeColor,
@@ -108,26 +84,54 @@ export default class Cart extends Component {
       </View>
     );
   };
-  componentDidMount() {
-    
-        store.subscribe(()=>this.setState({ }))
-    
-   let data=store.getState().cartArray
-    let nr = 0;
-    for (let i in data) {
-      nr += data[i].price * data[i].quantity;
-    }
-    this.setState({
-      totalprice: nr,
-    });
-    
+ 
+  componentDidMount(){
+    action.totalPrice(this.props.cartArray)
+  }
+  footer=()=>{
+      
+         if(this.props.cartArray.length==0){
+            return (
+              <View></View>
+            )
+         }
+         else{
+           return(
+            <View style={styles.paymentDetailsView}>
+               <View style={styles.lineView}></View>
+          <Text style={styles.priceDetails}>ORDER SUMMARY</Text>
+          <View style={styles.lineView}></View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.price}>Total Price</Text>
+            <Text style={styles.price}>Rs.{this.props.totalprice}</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.price}>Shipping</Text>
+            <Text style={styles.deliverycharge}>FREE</Text>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.price}>Coupon Discount</Text>
+            <Text style={styles.deliverycharge}>Apply Coupon</Text>
+          </View>
+          <View style={styles.lineView}></View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.totalPrice}>Total Amount</Text>
+            <Text style={styles.price}>Rs.{this.props.totalprice}</Text>
+          </View>
+        </View>
+           )
+         }
+       
   }
 
   render() {
     const {data} = this.props.route.params;
-    const {totalprice} = this.state;
+    
     const {navigation} = this.props;
-   
+   const {cartArray,totalPrice}=this.props
+
+ 
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -135,9 +139,9 @@ export default class Cart extends Component {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id.toString()}
           ItemSeparatorComponent={this.flatListItemSeparator}
-          data={store.getState().cartArray}
+          data={cartArray}
           ListEmptyComponent={this.renderEmptyContainer}
-        //   ListFooterComponent={this.footer}
+          ListFooterComponent={this.footer}
           renderItem={({item}) => (
             <CartItem
               data={item}
@@ -146,10 +150,12 @@ export default class Cart extends Component {
               deleteCount={this.deleteCount}
               removeItem={this.removeItem}
               isDisable={this.isDisable}
+              
+
             />
           )}
         />
-
+         {/* <Text>Total Amount :{this.props.totalprice}</Text> */}
         <TouchableOpacity
          >
           <View style={styles.totalprice}>
@@ -160,9 +166,20 @@ export default class Cart extends Component {
     );
   }
 }
+const mapStateToProps=state=>{
+   return {
+
+     cartArray:state.cart.cartArray,
+     totalprice:state.cart.totalPrice
+
+   }
+}
+
+export default connect(mapStateToProps)(Cart)
+
 const styles = StyleSheet.create({
   totalprice: {
-    backgroundColor: '#FF3E6C',
+    backgroundColor:colors.themeColor,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -174,4 +191,50 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
   },
-});
+  footerView:
+    {flexDirection:'row',justifyContent:'space-between',marginHorizontal:20,
+  
+  },
+    footerText:{
+      fontSize:18,
+      color:colors.themeColor
+    },
+    paymentDetailsView: {
+      height: '35%',
+      marginHorizontal: 10,
+      backgroundColor: 'white',
+      marginTop: 10,
+  
+      borderRadius: 10,
+     
+    },
+    priceDetails: {
+      color:colors.themeColor,
+      fontSize: 15,
+      marginHorizontal: 15,
+      marginVertical: 10,
+    },
+    lineView: {
+      height: 0.5,
+      backgroundColor: 'lightgrey',
+      marginVertical: 5,
+    },
+    price: {
+      fontSize: 15,
+      marginHorizontal: 15,
+      marginVertical: 10,
+    },
+    totalPrice: {
+      fontSize: 15,
+      marginHorizontal: 15,
+      marginVertical: 10,
+    },
+    deliverycharge: {
+      color: 'green',
+      fontSize: 15,
+      marginHorizontal: 15,
+      marginVertical: 10,
+    },
+  
+}
+);

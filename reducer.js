@@ -1,42 +1,29 @@
 import types from './types'
 const initialState={
-    cartArray:[],
+    cartArray:[]
+    
+    
 };
 export default function counterReducer(state=initialState,action){
     switch(action.type){
         case types.ADD:
-            const {obj}=action.payload
-            console.log(state.cartArray)
+
+          const{newArray,itemIndex}=action.payload
+          if(!state.cartArray.includes(newArray[itemIndex]))
+          {
+              newArray[itemIndex].quantity+=1
+              cartArray=[...state.cartArray,newArray[itemIndex]]
+
+          }
+          console.log(state.cartArray)
             return{
                 ...state,
-                cartArray:[...state.cartArray,obj]
+                cartArray
             }
-        case types.DELETE:
-           let newArray=state.cartArray
-            newArray=newArray.filter(item=>action.payload.id !==item.id)
-            return {
-                ...state,
-                cartArray:newArray
-            }
-        case types.UPDATE:
-            newArray=state.cartArray
-            console.log(action.payload.id)
-            let elementsIndex = newArray.findIndex(
-                (element) => element.id ==action.payload.id,
-              );
-              
-              newArray[elementsIndex] = {
-                ...newArray[elementsIndex],
-                taskname:action.payload.updatedtext,
-                stutus:action.payload.status
+        // case types.DELETE:
+        //     const {newArray,itemIndex}=action.payload
+            
 
-              };
-
-            return {
-                ...state,
-                cartArray:newArray
-
-            }
         default:
             return state
     }

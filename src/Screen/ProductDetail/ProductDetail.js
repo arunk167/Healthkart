@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {View, Text, Image, StyleSheet, ScrollView, Button} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { color } from 'react-native-reanimated';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import navigationStrings from '../../constants/navigationStrings';
+import colors from '../../styles/colors';
 
 export default class ProductDetail extends Component {
   constructor(props) {
@@ -39,13 +42,13 @@ export default class ProductDetail extends Component {
               Choose to return or exchange for a different size within 30 days
             </Text>
           </View>
-          <View style={{marginTop: 10, backgroundColor: 'white'}}>
+          {/* <View style={{marginTop: 10, backgroundColor: 'white'}}>
             <View style={styles.selectSizeText}>
               <Text style={{color: 'gray', fontSize: 15}}>SELECT SIZE</Text>
-              <Text style={{color: '#FF3E6C', fontSize: 15}}>SIZE CHART</Text>
-            </View>
+              <Text style={{color:colors.themeColor, fontSize: 15}}>SIZE CHART</Text>
+            </View> */}
 
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 marginHorizontal: 5,
@@ -61,18 +64,18 @@ export default class ProductDetail extends Component {
                 <Text style={styles.sizeText}>L</Text>
               </View>
               <View style={styles.sizeView}>
-                <Text style={styles.sizeText}>XL</Text>
+                <Text style={styles.sizeText}>XL</Text> 
               </View>
               <View style={styles.sizeView}>
                 <Text style={styles.sizeText}>XXL</Text>
               </View>
-            </View>
-          </View>
+            </View> */}
+          {/* </View> */}
           <TouchableOpacity style={{marginHorizontal: 15}}
            onPress={()=>navigation.navigate(navigationStrings.HOMEPAGE , {productDetail:selectedItem.id})}>
             <Button
               title="ADD TO CART"
-              color="#FF3E6C"
+              color={colors.themeColor}
               style={{marginBottom: 10}}
             />
           </TouchableOpacity>

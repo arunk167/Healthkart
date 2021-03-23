@@ -7,10 +7,16 @@ import {
   StyleSheet,
   Button,
 } from 'react-native';
-import imagePath from '../constants/imagePath';
-export default function MenProducts(props) {
-  const {data, datapass,  onItemAdd} = props;
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { connect } from 'react-redux';
 
+
+import imagePath from '../constants/imagePath';
+import colors from '../styles/colors';
+
+ function MenProducts(props) {
+  const {data, datapass,  onItemAdd} = props;
+  const {cartArray}=props
   return (
     <View>
       <View style={{marginHorizontal: 10, marginVertical: 10}}>
@@ -20,18 +26,31 @@ export default function MenProducts(props) {
         <Text style={{fontStyle: 'italic'}}>{data.name}</Text>
         <Text style={{fontSize: 10, color: 'gray'}}>{data.detail}</Text>
         <Text style={{marginBottom: 5}}>Rs.{data.price}</Text>
+       {!cartArray.includes(data)?
         <Button
-          title="Buy Now"
-          color="#FF3E6C"
-          onPress={() =>onItemAdd(data.id)}
-        />
+          title="Buy Now" 
+          color={colors.themeColor}
+          onPress={() =>onItemAdd(data)}
+        /> :
+        <Button
+        title="Added in cart" 
+        color={colors.themeColor}
+        onPress={() =>onItemAdd(data)}
+      />}
       </View>
     </View>
   );
 }
+const mapStateToProps = state => {
+  return {
+    cartArray: state.cart.cartArray,
+  };
+};
+
+export default connect(mapStateToProps)(MenProducts);
 const styles = StyleSheet.create({
   image: {
-    height: 220,
+    height: 180,
     width: 160,
   },
 });

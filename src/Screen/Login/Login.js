@@ -10,18 +10,20 @@ import colors from '../../styles/colors';
 import commonStyles from '../../styles/commonStyles';
 import validator from '../../utils/validation';
 import {showMessage} from 'react-native-flash-message';
-import api from '../../apis';
+import api from '../../redux/actions';
 
 import {
   moderateScaleVertical,
   moderateScale,
 } from '../../styles/responsiveSize';
+import { setUserData } from '../../utils/utils';
 
 export default class Login extends Component {
   state = {
     userEmail: '',
     userPassword: '',
     isLoading: false,
+    phoneNumber:''
   };
   onmove = () => {
     const {navigation} = this.props;
@@ -29,22 +31,24 @@ export default class Login extends Component {
   };
   isValidData = () => {
     const {
-      userEmail,
-      userName,
-      userPassword,
-      confirmPassword,
-      dateOfBirth,
+      // userEmail,
+      // userName,
+      // userPassword,
+      // confirmPassword,
+      // dateOfBirth,
+      phoneNumber
     } = this.state;
     const error = validator({
-      name: userName,
-      email: userEmail,
-      password: userPassword,
-      confirmPassword: confirmPassword,
+      // name: userName,
+      // email: userEmail,
+      // password: userPassword,
+      // confirmPassword: confirmPassword,
+      phoneNumber:phoneNumber
     });
     if (error) {
       showMessage({
-        type: 'info',
-        icon: 'info',
+        type: 'danger',
+        icon: 'danger',
         message: error,
       });
       return false;
@@ -53,7 +57,8 @@ export default class Login extends Component {
     return true;
   };
   onLogin = () => {
-    const {userPassword, userEmail} = this.state;
+
+    const {userPassword, userEmail,phoneNumber} = this.state;
     const {navigation} = this.props;
     if (this.isValidData()) {
       this.setState({
@@ -62,8 +67,13 @@ export default class Login extends Component {
 
       api
         .login({
-          email: userEmail,
-          password: userPassword,
+          contactDetails:{
+            phoneNo:phoneNumber,
+            countryCode:'+91',
+            countryCodeISO:"IN"
+          }
+          // email: userEmail,
+          // password: userPassword, 
         })
         .then(res => {
           this.setState({
@@ -72,10 +82,10 @@ export default class Login extends Component {
           showMessage({
             type: 'success',
             icon: 'success',
-            message: 'Login success',
+            message: 'Otp sent successfully  ',
           });
+        navigation.navigate(navigationStrings.OTPVERIFICATION,{userId:res.data.userId})
 
-          navigation.navigate(navigationStrings.HOMEPAGE);
         })
         .catch(error => {
           this.setState({
@@ -84,7 +94,7 @@ export default class Login extends Component {
           showMessage({
             type: 'danger',
             icon: 'danger',
-            message: 'Enter correct username password',
+            message: 'Something went wrong',
           });
         });
     }
@@ -97,7 +107,7 @@ export default class Login extends Component {
     };
   }
   render() {
-    const {userPassword, userEmail} = this.state;
+    const {userPassword, userEmail,isLoading,phoneNumber} = this.state;
     return (
       <WrapperContainer>
         <View style={{flex: 1, backgroundColor: colors.white}}>
@@ -107,20 +117,20 @@ export default class Login extends Component {
               marginTop: moderateScaleVertical(15),
             }}>
             <TextInputWithLabel
-              label="Email"
-              placeholder="Enter your Email"
-              onChangeText={this._onChangeText('userEmail')}
-              value={userEmail}
+              label="Phone No"
+              placeholder="Enter your Number"
+              onChangeText={this._onChangeText('phoneNumber')}
+              value={phoneNumber}
             />
-            <TextInputWithLabel
+            {/* <TextInputWithLabel
               label="Password"
               placeholder="Enter your password"
               secureTextEntry={true}
               value={userPassword}
               onChangeText={this._onChangeText('userPassword')}
-            />
+            /> */}
             <View>
-              <ButtonWithLoader btnText={'login'} onPress={this.onLogin} />
+              <ButtonWithLoader btnText={'login'} onPress={this.onLogin} isLoading={isLoading} />
             </View>
           </View>
 

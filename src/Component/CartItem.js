@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import store from '../../store';
+import store from '../redux/store';
+import colors from '../styles/colors';
+
 
 function CartItem(props) {
   const {data,addCount, deleteCount,onItemRemove,isDisable} = props;
@@ -12,27 +14,27 @@ function CartItem(props) {
   return (
     <View>
       <View style={styles.parentView}>
-        <Image source={{uri: data.image}} style={styles.image} />
+            <Image source={{uri: data.image}} style={styles.image} />
         <View>
           <Text>{data.name}</Text>
           <Text style={styles.detailText}>{data.detail}</Text>
           <View style={styles.price}>
             <Text>Rs.{data.price}</Text>
             <Text style={styles.lastprice}>Rs. {data.lastprice}</Text>
-          </View>
-          <Text style={{fontSize:18,color:'pink'}}>Rs.{item_total}</Text>
-          <View style={styles.counterView}>
-            <TouchableOpacity onPress={() => deleteCount(data.id)} isDisable={isDisable}>
-              <Text style={styles.counter}>-</Text>
+        </View>
+        <Text style={{fontSize:18,color:colors.themeColor}}>Total:{item_total}</Text>
+        <View style={styles.counterView}>
+            <TouchableOpacity onPress={() => deleteCount(data.id)} >
+              <Text style={styles.counter}> -</Text>
             </TouchableOpacity>
-            <Text style={styles.counter}>{data.quantity}</Text>
+            <Text style={styles.counterQuantity}>{data.quantity}</Text>
             <TouchableOpacity onPress={() => addCount(data.id)}>
-              <Text style={styles.counter}>+</Text>
-            </TouchableOpacity>
-            
-          </View>
+              <Text style={styles.counter}>+ </Text>
+            </TouchableOpacity> 
+          </View> 
           
         </View>
+       
       </View>
 
       <View style={styles.cartText}>
@@ -80,16 +82,22 @@ const styles = StyleSheet.create({
   counter: {
     fontSize: 20,
     padding: 4,
-    justifyContent:'center',
-    alignItems:'center'
+    marginHorizontal:5
+    
+  },
+  counterQuantity:{
+    fontSize: 20,
+    padding: 4,
+    color:colors.textGreyB
+
   },
   counterView: {
     flexDirection: 'row',
-    marginTop: 10,
-    borderWidth: 1,
+    
+    borderWidth:1,
     borderColor: 'gray',
-    marginHorizontal: 30,
-    marginTop:40,
+    width:"45%",
+    marginVertical:10,
     justifyContent: 'space-between',
   },
 });

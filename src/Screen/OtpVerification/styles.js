@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
 
   root: {
-    marginHorizontal: moderateScale(16),
+    marginHorizontal: moderateScale(20),
     marginVertical: 30,
     justifyContent: 'space-between',
   },
@@ -39,17 +39,17 @@ export default StyleSheet.create({
   title: {textAlign: 'center', fontSize: 30},
   codeFieldRoot: {marginTop: 20},
   cell: {
-    width: textScale(60),
-    height: textScale(60),
+    width: textScale(55),
+    height: textScale(55),
     fontFamily: fontFamily.regular,
     lineHeight: textScale(57),
     fontSize: 24,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: textScale(30),
     borderColor: colors.black,
     color: colors.black,
     textAlign: 'center',
-    marginRight: 10,
+   
   },
   focusCell: {
     borderColor: colors.themeColor,

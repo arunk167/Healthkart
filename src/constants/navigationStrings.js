@@ -5,5 +5,8 @@ export default{
    OTPVERIFICATION:'OtpVerification',
    HOMEPAGE:'Homepage',
    PRODUCT_DETAIL:'ProductDetail',
-   CART:'Cart'
+   CART:'Cart',
+   TAB_ROUTES:'tabRoutes',
+   PROFILE:'profile',
+   CONSULT:'consult'
 }
