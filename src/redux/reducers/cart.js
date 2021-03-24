@@ -1,11 +1,10 @@
-
 import types from "../types";
 import {showMessage} from 'react-native-flash-message';
-import { clearUserData } from "../../utils/utils";
+
 const initialState={
     cartArray:[],
     totalPrice:0,
-    isLoggedIn:false
+  
     
     
 };
@@ -15,10 +14,8 @@ const amount=(actionArray)=>{
   newPrice+=actionArray[i].price*actionArray[i].quantity
 }
 return newPrice;
-
-
 }
-export default function  (state=initialState,action){
+export default function counterReducer(state=initialState,action){
      
 
     switch(action.type){
@@ -42,24 +39,7 @@ export default function  (state=initialState,action){
              cartArray
            }
 
-          // if(!state.cartArray.includes(newArray[itemIndex]))
-          // {
-          //   newArray[itemIndex].quantity+=1
-          //     cartArray=[...state.cartArray,newArray[itemIndex]]
-             
-          // }
-          // else{
-          //   showMessage({
-          //     type: 'info',
-          //     icon: 'info',
-          //     message: 'Already added to cart',
-          //   });
-          // }
-        
-          //   return{
-          //       ...state,
-          //       cartArray
-          //   }
+         
         case types.DELETE:
             const {id}=action.payload
             let array=[...state.cartArray]
@@ -122,40 +102,16 @@ export default function  (state=initialState,action){
                ...state,
                totalPrice:price
              }
-             case types.LOGIN:
-              // const {userData}={...action.payload}
             
-  
-              return {
-                  ...state,
-                  // userData,
-                  // isLoggedIn:true
-              }
-          case types.ISLOGIN:
-  
-              const {res}={...action.payload}
-             
-              
-              return {
-                  ...state,
-                  res,
-                  isLoggedIn:true
-              }
-            
-          case types.ONLOGOUT:
-             clearUserData();
-            return {
-              ...state,
-              isLoggedIn:false
+
+
+         
+        default: 
+         {
+          return {
+            ...state
             }
-            case types.ONOTPVERIFY :
-              const {userData}={...action.payload}
-              return {
-                  ...state,
-                  userData,
-                  isLoggedIn:true
-              }
-        default:
-          return state
+         }
+
     }
 }

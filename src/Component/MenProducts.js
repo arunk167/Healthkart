@@ -20,7 +20,7 @@ import colors from '../styles/colors';
   return (
     <View>
       <View style={{marginHorizontal: 10, marginVertical: 10}}>
-        <TouchableOpacity onPress={() => datapass(data.id)}>
+        <TouchableOpacity onPress={() => datapass(data)}>
           <Image style={styles.image} source={{uri: data.image}} />
         </TouchableOpacity>
         <Text style={{fontStyle: 'italic'}}>{data.name}</Text>

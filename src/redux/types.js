@@ -1,4 +1,4 @@
-export default ({
+export default {
     ADD:'ADD',
     DELETE:'DELETE',
     ON_QUANTITY_ADD:'ON_QUANTITY_ADD',
@@ -8,7 +8,4 @@ export default ({
     LOGIN:"LOGIN",
     ONLOGOUT:'ONLOGOUT',
     ONOTPVERIFY:'ONOTPVERIFY'
-
-    
-    
-})
+}

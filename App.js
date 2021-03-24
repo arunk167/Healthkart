@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Alert} from 'react-native'
-import FlashMessage from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';              
 import { Provider } from 'react-redux';
 
 import Routes from './src/Navigation/Routes'
@@ -12,11 +12,12 @@ const {dispatch}=store
 export default class App extends Component {
   componentDidMount(){
     
-  getUserData().then((res)=>{
-   if(res){
-    dispatch({
-      type:types.ISLOGIN, 
-      payload:{res}
+  getUserData().then((userData)=>{
+   
+   if(userData){
+        dispatch({
+             type:types.ONOTPVERIFY, 
+             payload:userData
     }) 
    }    
   })

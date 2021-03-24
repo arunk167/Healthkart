@@ -25,7 +25,8 @@ export function login (data={}){
 export const onLogout=()=>{
    
     dispatch({
-        type:types.ONLOGOUT
+        type:types.ONLOGOUT,
+        payload:{}
     })
 }
 export function signup (data={}){ 
@@ -37,13 +38,15 @@ export function otpVerify (data={}){
    
     return new Promise ((resolve,reject)=>{
         apiPost(OTPVERIFY,data).then(res=>{
+            console.log("api response data",res.data);
             setUserData(res.data)
               .then(suc=>{
                 dispatch({
                     type:types.ONOTPVERIFY,
-                    paylaod:res.data
+                    payload:res.data
                 })
             })
+            console.log("resDataaaaa",res.data);
             resolve(res);
         }).catch(error=>{
             reject(error);

@@ -155,20 +155,16 @@ class Homepage extends Component {
 
  
   onItemAdd = (data) => {
-      // const {productArray}=this.state
-      //  let newArray=[...productArray]
-      //  let  itemIndex = newArray.findIndex(item=>item.id===id)
-      //  action.onAddCart(newArray,itemIndex) 
-      action.onAddCart(data)
+     
+    action.onAddCart(data)
     
 
   };
-  datapass = id => {
+  datapass = (data) => {
+
     const {navigation} = this.props;
-    const {productArray, addCart, itemCount} = this.state;
-    let newArray = [...productArray];
     navigation.navigate(navigationStrings.PRODUCT_DETAIL, {
-      selectedItem: newArray[id],
+      selectedItem: data,
     });
   };
   render() {
@@ -177,6 +173,7 @@ class Homepage extends Component {
       productArray,
       itemCount,
     } = this.state;
+    console.log("UserData=>>>",this.props.userData)
     return (
       <WrapperContainer>
         <View style={{flex: 1}}>
@@ -281,6 +278,7 @@ searcTextInput:{
 const mapStateToProps = state => {
   return {
     cartArray: state.cart.cartArray,
+    userData:state.cart.userData
   };
 };
 

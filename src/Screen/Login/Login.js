@@ -10,7 +10,7 @@ import colors from '../../styles/colors';
 import commonStyles from '../../styles/commonStyles';
 import validator from '../../utils/validation';
 import {showMessage} from 'react-native-flash-message';
-import api from '../../redux/actions';
+import actions from '../../redux/actions';
 
 import {
   moderateScaleVertical,
@@ -65,7 +65,7 @@ export default class Login extends Component {
         isLoading: true,
       });
 
-      api
+      actions
         .login({
           contactDetails:{
             phoneNo:phoneNumber,

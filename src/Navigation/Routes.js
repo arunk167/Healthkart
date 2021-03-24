@@ -7,14 +7,15 @@ import AuthSatck from './AuthStack';
 import { connect } from 'react-redux';
 const Stack=createStackNavigator();
  function Routes(props){
-  const {isLoggedIn}=props
+  const {userData}=props
+  console.log("routeeerrrrrrrrrrrrrrrr",userData)
     return(
        
         <NavigationContainer>
             <Stack.Navigator>
                
-            {isLoggedIn ?<>{MainStack()}</>
-             :  <>{AuthSatck()}</>
+            {userData.accessToken?<>{MainStack()}</>
+             :<>{AuthSatck()}</>
            }  
             </Stack.Navigator>
         </NavigationContainer>
@@ -22,7 +23,7 @@ const Stack=createStackNavigator();
 }
 const mapStateToProps=state=>{
     return{
-        isLoggedIn:state.cart.isLoggedIn,
+        userData:state.auth.userData
     }
 }
 export default connect(mapStateToProps)(Routes)

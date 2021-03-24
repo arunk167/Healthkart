@@ -13,7 +13,7 @@ import {
 
 
 import navigationStrings from '../../constants/navigationStrings';
-import api from '../../redux/actions/index';
+import actions from '../../redux/actions/index';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 
@@ -37,6 +37,7 @@ import colors from '../../styles/colors';
 import ButtonWithLoader from '../../Component/ButtonWithLoader';
 import WrapperContainer from '../../Component/WrapperContainer';
 
+import action from '../../redux/actions';
 
 const CELL_COUNT = 5;
 export default class OtpVerification extends Component {
@@ -67,7 +68,7 @@ export default class OtpVerification extends Component {
       isLoading: true,
     });
 
-    api
+    actions
       .otpVerify({
         userId,
         otp: otp,
@@ -75,6 +76,7 @@ export default class OtpVerification extends Component {
         registerFrom: Platform.OS.toUpperCase(),
       })
       .then(res => {
+       
         this.setState({
           isLoading: false,
         });

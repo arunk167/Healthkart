@@ -21,8 +21,8 @@ import action from '../../redux/actions';
  
   flatListItemSeparator = () => {
     return (
-      <View
-        style={{
+      <View            
+        style={{                    
           height: 4,
           width: '100%',
           backgroundColor: '#DCDCDC',
@@ -32,7 +32,7 @@ import action from '../../redux/actions';
   };
   addCount=(add_id)=>{
  
-      // this.props._addCount(add_id)
+    
       action.onIncrementCount(add_id)
   }
 
